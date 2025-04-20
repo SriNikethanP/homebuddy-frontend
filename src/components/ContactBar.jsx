@@ -16,11 +16,11 @@ const ContactBar = () => {
           <div className="flex items-center space-x-4">
             <a href="tel:+1234567890" className="text-sm hover:text-purple-400">
               <i className="fas fa-phone mr-2"></i>
-              +1 (234) 567-890
+              +91 9860222552
             </a>
             <a href="mailto:info@homebuddy.com" className="text-sm hover:text-purple-400">
               <i className="fas fa-envelope mr-2"></i>
-              info@homebuddy.com
+              home.buddy6893@gmail.com
             </a>
           </div>
           <div className="flex items-center space-x-4">
@@ -40,7 +40,7 @@ const ContactBar = () => {
           <div className="flex justify-between items-center">
             <Link to="/contact" className="text-sm hover:text-purple-400">
               <i className="fas fa-phone mr-2"></i>
-              <span className="hidden sm:inline">+1 (234) 567-890</span>
+              <span className="hidden sm:inline">+91 9860222552</span>
               <span className="sm:hidden">Contact Us</span>
             </Link>
             <button
@@ -55,13 +55,13 @@ const ContactBar = () => {
           {/* Mobile menu */}
           {mobileMenuOpen && (
             <div className="mt-2 py-2 space-y-2 border-t border-gray-700">
-              <a href="mailto:info@homebuddy.com" className="block text-sm hover:text-purple-400">
+              <a href="mailto:ihome.buddy6893@gmail.com" className="block text-sm hover:text-purple-400">
                 <i className="fas fa-envelope mr-2"></i>
-                info@homebuddy.com
+                home.buddy6893@gmail.com
               </a>
               <a href="tel:+1234567890" className="block text-sm hover:text-purple-400">
                 <i className="fas fa-phone mr-2"></i>
-                Call Us: +1 (234) 567-890
+                Call Us: +91 9860222552
               </a>
               <Link to="/contact" className="block text-sm hover:text-purple-400">
                 <i className="fas fa-headset mr-2"></i>

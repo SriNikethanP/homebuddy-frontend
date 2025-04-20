@@ -89,7 +89,7 @@ const ContactForm = () => {
               </div>
             </div>
 
-            <div className="space-y-4">
+            {/* <div className="space-y-4">
               <div className="flex items-center">
                 <input
                   type="checkbox"
@@ -159,7 +159,7 @@ const ContactForm = () => {
                   </label>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div>
               <button

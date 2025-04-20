@@ -20,7 +20,7 @@ const Contact = () => {
                 </svg>
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">Phone</h3>
-              <p className="text-gray-600">00000 00000</p>
+              <p className="text-gray-600">+91 9860222552</p>
             </div>
           </div>
 
@@ -33,7 +33,7 @@ const Contact = () => {
                 </svg>
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">Email</h3>
-              <p className="text-gray-600">contact@homebuddy.com</p>
+              <p className="text-gray-600">home.buddy6893@gmail.com</p>
             </div>
           </div>
 
@@ -76,7 +76,7 @@ const Contact = () => {
               Book Free Appointment
             </Link>
             <a
-              href="tel:0000000000"
+              href="tel:+91 9860222552"
               className="bg-green-600 text-white py-3 px-6 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-lg font-medium"
             >
               Call Now
