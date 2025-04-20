@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns-tz';
 import { bookingService } from '../services/api';
 import { toast } from 'react-hot-toast';
@@ -30,7 +30,7 @@ const AdminDashboard = () => {
         return () => {
             window.removeEventListener('resize', checkMobile);
         };
-    }, [filters]);
+    }, [filters, fetchBookings]);
 
     useEffect(() => {
         // Update selectAll state when all bookings are selected
@@ -41,7 +41,7 @@ const AdminDashboard = () => {
         }
     }, [selectedBookings, bookings]);
 
-    const fetchBookings = async () => {
+    const fetchBookings = useCallback(async () => {
         try {
             setLoading(true);
             const response = await bookingService.getAllBookings(filters);
@@ -53,7 +53,7 @@ const AdminDashboard = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [filters]);
 
     const handleStatusChange = async (bookingId, newStatus) => {
         try {
