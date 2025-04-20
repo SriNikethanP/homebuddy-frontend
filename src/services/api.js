@@ -1,7 +1,11 @@
 import axios from 'axios';
+import config from '../config';
 
-// Safely get the API URL with a fallback
-const API_BASE_URL = process.env.VITE_API_URL || 'https://homebuddy-backend-1.onrender.com/api';
+// Use the API URL from the config
+const API_BASE_URL = config.apiUrl;
+
+// Log for debugging
+console.log('API Service using URL:', API_BASE_URL);
 
 const api = axios.create({
   baseURL: API_BASE_URL,

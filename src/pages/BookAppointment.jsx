@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Calendar from '../components/Calendar';
+import { bookingService } from '../services/api';
+import { toast } from 'react-toastify';
 
 const BookAppointment = () => {
+  const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedService, setSelectedService] = useState('');
@@ -24,6 +28,7 @@ const BookAppointment = () => {
     phone: false,
     address: false
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Generate time slots from 9 AM to 8 PM (12 slots)
   const timeSlots = [
@@ -56,9 +61,9 @@ const BookAppointment = () => {
       case 'name':
         return value.trim() === '' ? 'Name is required' : '';
       case 'phone':
-        return value.trim() === '' 
-          ? 'Phone number is required' 
-          : !/^\d{10}$/.test(value.trim()) 
+        return value.trim() === ''
+          ? 'Phone number is required'
+          : !/^\d{10}$/.test(value.trim())
             ? 'Please enter a valid 10-digit phone number'
             : '';
       case 'address':
@@ -102,14 +107,39 @@ const BookAppointment = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const resetForm = () => {
+    setSelectedDate('');
+    setSelectedTime('');
+    setSelectedService('');
+    setFormData({
+      name: '',
+      phone: '',
+      address: ''
+    });
+    setErrors({
+      service: '',
+      date: '',
+      time: '',
+      name: '',
+      phone: '',
+      address: ''
+    });
+    setTouched({
+      service: false,
+      name: false,
+      phone: false,
+      address: false
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate all fields
     const newErrors = {
       service: validateField('service', selectedService),
       date: !selectedDate ? 'Please select a date' : '',
-      time: !selectedTime ? 'Please select a time slot' : '',
+      time: !selectedTime ? 'Please select a time' : '',
       name: validateField('name', formData.name),
       phone: validateField('phone', formData.phone),
       address: validateField('address', formData.address)
@@ -118,6 +148,8 @@ const BookAppointment = () => {
     setErrors(newErrors);
     setTouched({
       service: true,
+      date: true,
+      time: true,
       name: true,
       phone: true,
       address: true
@@ -128,13 +160,23 @@ const BookAppointment = () => {
       return;
     }
 
-    // Handle form submission
-    console.log({
-      ...formData,
-      selectedDate,
-      selectedTime,
-      selectedService
-    });
+    try {
+      setIsSubmitting(true);
+      const bookingData = {
+        ...formData,
+        service: selectedService,
+        preferredDateTime: `${selectedDate}T${selectedTime}`,
+      };
+
+      await bookingService.createBooking(bookingData);
+      toast.success('Appointment booked successfully!');
+      resetForm();
+      navigate('/booking-success');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to book appointment. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -194,9 +236,8 @@ const BookAppointment = () => {
                   value={selectedService}
                   onChange={handleServiceChange}
                   onBlur={() => handleBlur('service')}
-                  className={`mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 ${
-                    touched.service && errors.service ? 'border-red-500' : ''
-                  }`}
+                  className={`mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 ${touched.service && errors.service ? 'border-red-500' : ''
+                    }`}
                   required
                 >
                   <option value="">Choose a service</option>
@@ -223,16 +264,15 @@ const BookAppointment = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     onBlur={() => handleBlur('name')}
-                    className={`mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 ${
-                      touched.name && errors.name ? 'border-red-500' : ''
-                    }`}
+                    className={`mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 ${touched.name && errors.name ? 'border-red-500' : ''
+                      }`}
                     required
                   />
                   {touched.name && errors.name && (
                     <p className="text-red-500 text-sm mt-1">{errors.name}</p>
                   )}
                 </div>
-                
+
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                     Phone*
@@ -244,9 +284,8 @@ const BookAppointment = () => {
                     value={formData.phone}
                     onChange={handleInputChange}
                     onBlur={() => handleBlur('phone')}
-                    className={`mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 ${
-                      touched.phone && errors.phone ? 'border-red-500' : ''
-                    }`}
+                    className={`mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 ${touched.phone && errors.phone ? 'border-red-500' : ''
+                      }`}
                     required
                   />
                   {touched.phone && errors.phone && (
@@ -266,9 +305,8 @@ const BookAppointment = () => {
                   onChange={handleInputChange}
                   onBlur={() => handleBlur('address')}
                   rows={3}
-                  className={`mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 ${
-                    touched.address && errors.address ? 'border-red-500' : ''
-                  }`}
+                  className={`mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 ${touched.address && errors.address ? 'border-red-500' : ''
+                    }`}
                   required
                 />
                 {touched.address && errors.address && (
@@ -279,9 +317,21 @@ const BookAppointment = () => {
               <div>
                 <button
                   type="submit"
-                  className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors duration-200"
+                  disabled={isSubmitting}
+                  className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
                 >
-                  Confirm Booking
+                  {isSubmitting ? (
+                    <span className="flex items-center justify-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Booking Appointment...
+                    </span>
+                  ) : (
+                    'Book Appointment'
+                  )}
                 </button>
               </div>
             </div>

@@ -1,6 +1,10 @@
-import axios from 'axios';
+import axios from '../axios-config';
+import config from '../config';
 
-const API_URL = 'http://localhost:8080/api/auth';
+// Use the API URL from the config
+const API_URL = `${config.apiUrl}/auth`;
+
+console.log('Auth Service using URL:', API_URL);
 
 // Configure axios defaults
 axios.defaults.withCredentials = true;
@@ -35,7 +39,7 @@ const authService = {
     login: async (credentials) => {
         try {
             console.log('Sending login request with credentials:', { username: credentials.username, password: '***' });
-            const response = await api.post('/login', credentials);
+            const response = await axios.post('/auth/login', credentials);
             console.log('Login response received:', { status: response.status, data: { ...response.data, token: '***' } });
             
             if (response.data.token) {

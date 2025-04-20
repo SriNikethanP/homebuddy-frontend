@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns-tz';
 import { bookingService } from '../services/api';
-import { toast } from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services/auth';
 
 const AdminDashboard = () => {
@@ -15,6 +16,7 @@ const AdminDashboard = () => {
         status: 'all'
     });
     const [mobileView, setMobileView] = useState(false);
+    const navigate = useNavigate();
 
     const fetchBookings = useCallback(async () => {
         try {
@@ -24,7 +26,14 @@ const AdminDashboard = () => {
             setSelectedBookings([]); // Reset selections when filters change
         } catch (error) {
             console.error('Error fetching bookings:', error);
-            toast.error('Failed to fetch bookings');
+            toast.error('Failed to fetch bookings', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         } finally {
             setLoading(false);
         }
@@ -59,10 +68,24 @@ const AdminDashboard = () => {
         try {
             await bookingService.updateBookingStatus(bookingId, newStatus);
             fetchBookings(); // Refresh the list
-            toast.success('Status updated successfully');
+            toast.success('Status updated successfully', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         } catch (error) {
             console.error('Error updating status:', error);
-            toast.error('Failed to update status');
+            toast.error('Failed to update status', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         }
     };
 
@@ -92,16 +115,38 @@ const AdminDashboard = () => {
                 setSelectedBookings([]);
                 setSelectAll(false);
                 fetchBookings(); // Refresh the bookings list
-                toast.success('Selected bookings deleted successfully');
+                toast.success('Selected bookings deleted successfully', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
             } catch (error) {
-                toast.error('Failed to delete selected bookings');
+                toast.error('Failed to delete selected bookings', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
             }
         }
     };
 
     const handleLogout = () => {
         authService.logout();
-        window.location.href = '/login';
+        toast.success('Logged out successfully', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+        });
+        navigate('/login');
     };
 
     const statusColors = {
@@ -328,6 +373,7 @@ const AdminDashboard = () => {
                     </div>
                 )}
             </div>
+            <ToastContainer />
         </div>
     );
 };

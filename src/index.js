@@ -1,8 +1,10 @@
+import './axios-config'; // Import axios config first
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App.jsx';
 import reportWebVitals from './reportWebVitals';
+import './test-env'; // Import the test file
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
