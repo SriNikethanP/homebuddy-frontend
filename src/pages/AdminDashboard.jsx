@@ -16,6 +16,20 @@ const AdminDashboard = () => {
     });
     const [mobileView, setMobileView] = useState(false);
 
+    const fetchBookings = useCallback(async () => {
+        try {
+            setLoading(true);
+            const response = await bookingService.getAllBookings(filters);
+            setBookings(response);
+            setSelectedBookings([]); // Reset selections when filters change
+        } catch (error) {
+            console.error('Error fetching bookings:', error);
+            toast.error('Failed to fetch bookings');
+        } finally {
+            setLoading(false);
+        }
+    }, [filters]);
+
     useEffect(() => {
         fetchBookings();
 
@@ -40,20 +54,6 @@ const AdminDashboard = () => {
             setSelectAll(false);
         }
     }, [selectedBookings, bookings]);
-
-    const fetchBookings = useCallback(async () => {
-        try {
-            setLoading(true);
-            const response = await bookingService.getAllBookings(filters);
-            setBookings(response);
-            setSelectedBookings([]); // Reset selections when filters change
-        } catch (error) {
-            console.error('Error fetching bookings:', error);
-            toast.error('Failed to fetch bookings');
-        } finally {
-            setLoading(false);
-        }
-    }, [filters]);
 
     const handleStatusChange = async (bookingId, newStatus) => {
         try {
