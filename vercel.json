@@ -33,6 +33,6 @@
     }
   ],
   "env": {
-    "VITE_API_URL": "https://homebuddy-backend.onrender.com/api"
+    "VITE_API_URL": "https://homebuddy-backend-1.onrender.com/api"
   }
 } 

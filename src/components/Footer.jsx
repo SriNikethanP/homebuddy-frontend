@@ -8,13 +8,7 @@ const Footer = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div className="col-span-1 sm:col-span-2 lg:col-span-2">
                         <Link to="/" className="text-xl sm:text-2xl font-bold text-purple-400">HomeBuddy</Link>
-                        <p className="mt-2 text-sm sm:text-base text-gray-400">Proudly Serving Pune, Maharashtra</p>
-                        <div className="mt-4">
-                            <p className="text-sm sm:text-base text-gray-400">
-                                Office: 123 Business Hub, Koregaon Park<br />
-                                Pune, Maharashtra 411001
-                            </p>
-                        </div>
+                        <p className="mt-2 text-sm sm:text-base text-gray-400">Pune, Maharashtra</p>
                     </div>
 
                     <div>
@@ -31,10 +25,10 @@ const Footer = () => {
                         <h3 className="text-base sm:text-lg font-semibold mb-4">Contact Info</h3>
                         <ul className="space-y-2">
                             <li className="text-sm sm:text-base text-gray-400 flex items-center gap-2">
-                                <span>📞</span> +91 1234567890
+                                <span>📞</span> +91 9860222552
                             </li>
                             <li className="text-sm sm:text-base text-gray-400 flex items-center gap-2">
-                                <span>✉️</span> info@homebuddy.in
+                                <span>✉️</span> home.buddy6893@gmail.com
                             </li>
                             <li className="text-sm sm:text-base text-gray-400 flex items-center gap-2">
                                 <span>⏰</span> Mon-Sat: 9 AM - 7 PM
